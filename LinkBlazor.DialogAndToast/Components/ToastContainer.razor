@@ -1,0 +1,83 @@
+﻿@using System.Timers
+@using Microsoft.AspNetCore.Components.Web
+
+@if (Visible)
+{
+    <div class="lb-toast-message" style="width:250px;z-index: 1002;position:static;@(Message.Click != null || Message.CloseOnClick ? "cursor: pointer;" : "") @Style">
+        <div aria-live="polite" class="@GetMessageCssClasses()">
+            <div class="lb-toast-item" style="position:relative">
+                <a @onclick:preventDefault="true" style="position:absolute; right:5px; top:8px; cursor:pointer;" @onclick=@Close role="button">
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="12px" height="12px"
+                         viewBox="0 0 121.31 122.876" enable-background="new 0 0 121.31 122.876" xml:space="preserve"><g>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M90.914,5.296c6.927-7.034,18.188-7.065,25.154-0.068 c6.961,6.995,6.991,18.369,
+                            0.068,25.397L85.743,61.452l30.425,30.855c6.866,6.978,6.773,18.28-0.208,25.247 c-6.983,6.964-18.21,
+                            6.946-25.074-0.031L60.669,86.881L30.395,117.58c-6.927,7.034-18.188,7.065-25.154,
+                            0.068 c-6.961-6.995-6.992-18.369-0.068-25.397l30.393-30.827L5.142,30.568c-6.867-6.978-6.773-18.28,
+                            0.208-25.247 c6.983-6.963,18.21-6.946,25.074,0.031l30.217,30.643L90.914,5.296L90.914,5.296z" />
+                                            </g></svg>
+                </a>
+                <div class="lb-toast-message" @onclick="NotificationClicked">
+                    <div class="lb-toast-title">
+                        <div style="padding-right:6px">
+                            @((MarkupString)Message.Summary)
+                        </div>
+                    </div>
+                    <p class="lb-toast-detail">@((MarkupString)Message.Detail)</p>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+    </div>
+}
+@code {
+    string GetMessageCssClasses()
+    {
+        if (Message.Severity == ToastSeverity.Error)
+        {
+            return "lb-message-error";
+        }
+        else if (Message.Severity == ToastSeverity.Info)
+        {
+            return "lb-message-info";
+        }
+        else if (Message.Severity == ToastSeverity.Success)
+        {
+            return "lb-message-success";
+        }
+        else if (Message.Severity == ToastSeverity.Warning)
+        {
+            return "lb-message-warn";
+        }
+
+        return "";
+    }
+
+    [Inject] private ToastService Service { get; set; }
+
+    public bool Visible { get; set; } = true;
+
+    [Parameter]
+    public LinkBlazor.ToastMessage Message { get; set; }
+
+    [Parameter]
+    public string Style { get; set; }
+
+    public void Close()
+    {
+        Service.Messages.Remove(Message);
+        Message?.Close?.Invoke(Message);
+    }
+
+    protected override void OnInitialized()
+    {
+        System.Threading.Tasks.Task.Delay(Convert.ToInt32(Message.Duration ?? 3000)).ContinueWith(r => InvokeAsync(Close));
+    }
+
+    private void NotificationClicked()
+    {
+        if (Message.CloseOnClick)
+            Close();
+
+        Message?.Click?.Invoke(Message);
+    }
+}

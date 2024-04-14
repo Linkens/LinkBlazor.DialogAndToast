@@ -1,0 +1,58 @@
+﻿@implements IDisposable
+@using Microsoft.JSInterop
+@using LinkBlazor.Components
+@inject IJSRuntime JSRuntime
+
+@foreach (var dialog in dialogs)
+{
+    <DialogContainer @key=@dialog Dialog=@dialog ShowMask=@(dialog==dialogs.LastOrDefault()) />
+}
+
+@code {
+    [Inject]
+    DialogService Service { get; set; }
+
+    List<Dialog> dialogs = new List<Dialog>();
+
+    public async Task Open(Type type, Dictionary<string, object>? parameters, DialogOptions options)
+    {
+        dialogs.Add(new Dialog() { Type = type, Parameters = parameters, Options = options });
+
+        await InvokeAsync(() => { StateHasChanged(); });
+    }
+
+    public async Task Close(dynamic? result)
+    {
+        var lastDialog = dialogs.LastOrDefault();
+        if (lastDialog != null)
+        {
+            dialogs.Remove(lastDialog);
+            if (dialogs.Count == 0) await JSRuntime.InvokeAsync<string>("LinkBlazor.CloseDialog");
+        }
+
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose()
+    {
+        Service.OnOpen -= OnOpen;
+        Service.OnClose -= OnClose;
+    }
+    protected override void OnInitialized()
+    {
+        Service.OnOpen += OnOpen;
+        Service.OnClose += OnClose;
+    }
+    async void OnOpen(Type type, Dictionary<string, object>? parameters, DialogOptions options)
+    {
+        await Open(type, parameters, options);
+    }
+
+    async void OnClose(dynamic? result)
+    {
+        await Close(result);
+    }
+}

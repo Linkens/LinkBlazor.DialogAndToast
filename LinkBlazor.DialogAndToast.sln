@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34525.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinkBlazor.DialogAndToast", "LinkBlazor.DialogAndToast\LinkBlazor.DialogAndToast.csproj", "{040A4D9D-F9A5-4292-8275-7C16DED59721}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinkBlazor.Test", "LinkBlazor.Test\LinkBlazor.Test.csproj", "{F87ADC9B-7978-4142-8123-BC7A81B1F8D5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{040A4D9D-F9A5-4292-8275-7C16DED59721}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{040A4D9D-F9A5-4292-8275-7C16DED59721}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{040A4D9D-F9A5-4292-8275-7C16DED59721}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{040A4D9D-F9A5-4292-8275-7C16DED59721}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F87ADC9B-7978-4142-8123-BC7A81B1F8D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F87ADC9B-7978-4142-8123-BC7A81B1F8D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F87ADC9B-7978-4142-8123-BC7A81B1F8D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F87ADC9B-7978-4142-8123-BC7A81B1F8D5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {07FC317B-2B6C-45A3-9646-A1F03A63228C}
+	EndGlobalSection
+EndGlobal

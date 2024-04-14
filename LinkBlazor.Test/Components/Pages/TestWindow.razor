@@ -1,0 +1,14 @@
+﻿@inject DialogService Dialog
+
+<h3>TestWindow @Value</h3>
+
+<button @onclick="RecursiveChaos">New window</button>
+<button @onclick="()=>Dialog.Close(true)"></button>
+
+@code {
+    [Parameter] public int Value { get; set; }
+    protected async Task RecursiveChaos()
+    {
+        await Dialog.OpenAsync<TestWindow>(new() { { "Value", Value + 1 } });
+    }
+}

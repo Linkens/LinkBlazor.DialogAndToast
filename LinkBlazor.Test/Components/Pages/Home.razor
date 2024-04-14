@@ -1,0 +1,28 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@using LinkBlazor
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<button @onclick="Show">Test Dialog</button>
+<button @onclick="()=>ShowToast(ToastSeverity.Info)">Test Info</button>
+<button @onclick="()=>ShowToast(ToastSeverity.Warning)">Test Warning</button>
+<button @onclick="()=>ShowToast(ToastSeverity.Error)">Test Error</button>
+<button @onclick="()=>ShowToast(ToastSeverity.Success)">Test Success</button>
+@code {
+    [Inject] public DialogService Dialog { get; set; }
+    [Inject] public ToastService Toast { get; set; }
+    protected async Task Show()
+    {
+        var Return = await Dialog.OpenAsync<TestWindow>(options: new DialogOptions { Title = "Test", CloseDialogOnOverlayClick = true, CloseDialogOnEsc = true });
+    }
+    protected int Index = 0;
+    protected async Task ShowToast(ToastSeverity Severity)
+    {
+        Toast.Toast(Severity, $"{Severity.ToString()} Lorem Ipsum is", $"Détail {Index++} Lorem Ipsum is simply dummy text of the printing and typesetting industry. ", duration: 15000);
+    }
+}

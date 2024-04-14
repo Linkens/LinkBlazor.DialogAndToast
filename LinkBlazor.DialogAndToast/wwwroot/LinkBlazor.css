@@ -1,0 +1,111 @@
+﻿:root {
+    --lb-dialog-content-padding: 1.25rem;
+    --lb-dialog-mask-zindex: 1000;
+    --lb-dialog-zindex: 1001;
+    --lb-dialog-background-color: white;
+    --lb-dialog-shadow: 0 22px 64px 0 rgba(0, 0, 0, 0.22);
+    --lb-dialog-border-radius: var(--lb-border-radius);
+}
+
+.lb-dialog-wrapper {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: var(--lb-dialog-zindex);
+    align-items: center;
+    justify-content: center;
+}
+
+.lb-dialog {
+    position: absolute;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-width: 150px;
+    max-height: 100%;
+    min-height: 150px;
+    z-index: var(--lb-dialog-zindex);
+    opacity: 1;
+    background-color: var(--lb-dialog-background-color);
+    box-shadow: var(--lb-dialog-shadow);
+    border-radius: var(--lb-dialog-border-radius);
+}
+
+@media (max-width: 768px) {
+
+    .lb-dialog:not(.rz-dialog-confirm):not(.rz-dialog-alert) {
+        position: absolute;
+        width: 100% !important;
+        top: 0px !important;
+        border-radius: 0;
+    }
+}
+
+.lb-dialog-titlebar {
+}
+
+.lb-dialog-title {
+}
+
+.lb-dialog-content {
+    flex: 0 1 auto;
+    padding: var(--lb-dialog-content-padding);
+    overflow: auto;
+}
+
+.lb-dialog-mask {
+    position: fixed;
+    z-index: var(--lb-dialog-mask-zindex);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    backdrop-filter: blur(4px);
+    opacity: 1;
+    background-color: rgb(0 0 0 / 60%);
+}
+
+.lb-toast-message {
+}
+
+
+.lb-toast-item {
+    --lb-toast-bg: #fff;
+    background-color: var(--lb-toast-bg);
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.lb-toast-title {
+    font-size: 1.25rem;
+    font-weight: 900;
+    padding: 5px;
+    color: #333;
+    border-radius: 10px 10px 0px 0px;
+    border-bottom: 1px solid black;
+    background-color: #fffa
+}
+
+.lb-toast-detail {
+    padding: 0px 1rem;
+}
+
+.lb-message-error .lb-toast-item {
+    --lb-toast-bg: #f23939aa;
+}
+
+.lb-message-info .lb-toast-item {
+    --lb-toast-bg: #39d0f2aa;
+}
+
+.lb-message-success .lb-toast-item {
+    --lb-toast-bg: #30c833aa;
+}
+
+.lb-message-warn .lb-toast-item {
+    --lb-toast-bg: #f2e339aa;
+}
