@@ -13,6 +13,7 @@ Welcome to your new app.
 <button @onclick="()=>ShowToast(ToastSeverity.Warning)">Test Warning</button>
 <button @onclick="()=>ShowToast(ToastSeverity.Error)">Test Error</button>
 <button @onclick="()=>ShowToast(ToastSeverity.Success)">Test Success</button>
+<button @onclick="()=>ShowToastNo(ToastSeverity.Success)"> No Detail</button>
 @code {
     [Inject] public DialogService Dialog { get; set; }
     [Inject] public ToastService Toast { get; set; }
@@ -24,5 +25,9 @@ Welcome to your new app.
     protected async Task ShowToast(ToastSeverity Severity)
     {
         Toast.Toast(Severity, $"{Severity.ToString()} Lorem Ipsum is", $"Detail {Index++} Lorem Ipsum is simply dummy text of the printing and typesetting industry. ", duration: 15000);
+    }
+    protected async Task ShowToastNo(ToastSeverity Severity, string Title = "Bravo", string Detail = "")
+    {
+        Toast.Toast(Severity, Title, duration: 15000);
     }
 }

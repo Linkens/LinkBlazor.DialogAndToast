@@ -90,22 +90,26 @@
     background-color: #fffa
 }
 
+    .lb-toast-title.lb-toast-title-solo {
+        border-bottom: none;
+    }
+
 .lb-toast-detail {
     padding: 0px 1rem;
 }
 
 .lb-message-error .lb-toast-item {
-    --lb-toast-bg: #f23939dd;
+    --lb-toast-bg: #f23939ee;
 }
 
 .lb-message-info .lb-toast-item {
-    --lb-toast-bg: #39d0f2dd;
+    --lb-toast-bg: #39d0f2ee;
 }
 
 .lb-message-success .lb-toast-item {
-    --lb-toast-bg: #30c833dd;
+    --lb-toast-bg: #30c833ee;
 }
 
 .lb-message-warn .lb-toast-item {
-    --lb-toast-bg: #f2e339dd;
+    --lb-toast-bg: #f2e339ee;
 }
