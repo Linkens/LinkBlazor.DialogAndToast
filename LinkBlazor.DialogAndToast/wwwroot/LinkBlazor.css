@@ -95,17 +95,17 @@
 }
 
 .lb-message-error .lb-toast-item {
-    --lb-toast-bg: #f23939aa;
+    --lb-toast-bg: #f23939dd;
 }
 
 .lb-message-info .lb-toast-item {
-    --lb-toast-bg: #39d0f2aa;
+    --lb-toast-bg: #39d0f2dd;
 }
 
 .lb-message-success .lb-toast-item {
-    --lb-toast-bg: #30c833aa;
+    --lb-toast-bg: #30c833dd;
 }
 
 .lb-message-warn .lb-toast-item {
-    --lb-toast-bg: #f2e339aa;
+    --lb-toast-bg: #f2e339dd;
 }
