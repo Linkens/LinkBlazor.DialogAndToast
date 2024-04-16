@@ -10,7 +10,7 @@ window.LinkBlazor = {
           document.documentElement.scrollHeight >
           document.documentElement.clientHeight
         ) {
-          document.body.classList.add('no-scroll');
+          document.body.classList.add('lb-no-scroll');
         }
 
         setTimeout(function () {
@@ -31,7 +31,7 @@ window.LinkBlazor = {
     },
     CloseDialog: function () {
         LinkBlazor.dialogResizer = null;
-        document.body.classList.remove('no-scroll');
+        document.body.classList.remove('lb-no-scroll');
         var dialogs = document.querySelectorAll('.lb-dialog-content');
         if (dialogs.length <= 1) {
             document.removeEventListener('keydown', LinkBlazor.KeyCloseDialog);
