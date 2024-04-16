@@ -113,7 +113,7 @@
 .lb-message-warn .lb-toast-item {
     --lb-toast-bg: #f2e339ee;
 }
-.no-scroll {
+.lb-no-scroll {
     overflow: hidden;
     padding-right: 15px
 }
