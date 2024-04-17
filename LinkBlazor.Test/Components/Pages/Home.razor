@@ -1,5 +1,6 @@
 ﻿@page "/"
 @rendermode InteractiveServer
+@using Microsoft.AspNetCore.Components.Web
 @using LinkBlazor
 
 <PageTitle>Home</PageTitle>
@@ -8,18 +9,20 @@
 
 Welcome to your new app.
 
-<button @onclick="Show">Test Dialog</button>
+<button @onclick="()=>Show()">Test Dialog</button>
+<button @onclick="@(()=>Show("With Title"))">Test Title</button>
 <button @onclick="()=>ShowToast(ToastSeverity.Info)">Test Info</button>
 <button @onclick="()=>ShowToast(ToastSeverity.Warning)">Test Warning</button>
 <button @onclick="()=>ShowToast(ToastSeverity.Error)">Test Error</button>
 <button @onclick="()=>ShowToast(ToastSeverity.Success)">Test Success</button>
 <button @onclick="()=>ShowToastNo(ToastSeverity.Success)"> No Detail</button>
+<button @onclick="@(()=>ShowToastNo(ToastSeverity.Success," Lorem Ipsum is simply dummy text of the printing and typesetting industry."))"> No Detail Long</button>
 @code {
     [Inject] public DialogService Dialog { get; set; }
     [Inject] public ToastService Toast { get; set; }
-    protected async Task Show()
+    protected async Task Show(string Title = null)
     {
-        var Return = await Dialog.OpenAsync<TestWindow>(options: new DialogOptions { Title = "Test", CloseDialogOnOverlayClick = true, CloseDialogOnEsc = true });
+        var Return = await Dialog.OpenAsync<TestWindow>(options: new DialogOptions { Title = Title, CloseDialogOnOverlayClick = true, CloseDialogOnEsc = true });
     }
     protected int Index = 0;
     protected async Task ShowToast(ToastSeverity Severity)

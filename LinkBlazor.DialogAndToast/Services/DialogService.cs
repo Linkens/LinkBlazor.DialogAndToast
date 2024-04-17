@@ -81,7 +81,8 @@ namespace LinkBlazor
                 Top = options != null && !string.IsNullOrEmpty(options.Top) ? options.Top : "",
                 Bottom = options != null && !string.IsNullOrEmpty(options.Bottom) ? options.Bottom : "",
                 Height = options != null && !string.IsNullOrEmpty(options.Height) ? options.Height : "",
-                ShowTitle = options != null ? options.ShowTitle : true,
+                ShowTitle = options != null ? options.ShowTitle || !string.IsNullOrEmpty(options.Title) : true,
+                Title = options != null ? options.Title : string.Empty,
                 ShowClose = options != null ? options.ShowClose : true,
 
                 Style = options != null ? options.Style : "",
