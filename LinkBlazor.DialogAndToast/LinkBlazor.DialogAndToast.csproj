@@ -12,17 +12,17 @@
 		<PackageProjectUrl>https://github.com/Linkens/LinkBlazor.DialogAndToast</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Linkens/LinkBlazor.DialogAndToast</RepositoryUrl>
 		<PackageTags>Blazor;Dialog;Toast</PackageTags>
-		<AssemblyVersion>1.8.5</AssemblyVersion>
+		<AssemblyVersion>1.8.7</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<Description>Simple Toast and Dialog</Description>
 		<PackageIcon>dialog-icon.png</PackageIcon>
 		<PackageReadmeFile>Readme.md</PackageReadmeFile>
-
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 
 	<ItemGroup>
-	    <None Include="dialog-icon.png" Pack="true" PackagePath="\"/>
+		<None Include="dialog-icon.png" Pack="true" PackagePath="\"/>
 		<None Include="..\Readme.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
