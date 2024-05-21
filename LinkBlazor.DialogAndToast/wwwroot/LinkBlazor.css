@@ -56,8 +56,8 @@
 }
 
 .lb-dialog-titlebar-close, .lb-toast-titlebar-close {
-    display:flex;
-    align-items:center;
+    display: flex;
+    align-items: center;
     padding: 5px;
     margin: 5px;
     border: 1px solid transparent;
@@ -118,10 +118,15 @@
     border: 1px solid black;
     border-radius: 8px;
     margin-bottom: 10px;
+    transition: box-shadow 0.5s;
+    box-shadow: rgba(0, 0, 0, 0.35) 3px 3px 2.6px;
 }
 
+    .lb-toast-item:hover {
+        box-shadow: rgba(0, 0, 0, 0.75) 4px 4px 2.6px;
+    }
+
     .lb-toast-item.lb-toast-titlebar-solo {
-       
     }
 
 .lb-toast-titlebar {
@@ -143,8 +148,8 @@
 .lb-toast-title {
     width: 100%;
     font-size: 1.2rem;
-    display:flex;
-    align-items:center;
+    display: flex;
+    align-items: center;
 }
 
 .lb-toast-detail {
