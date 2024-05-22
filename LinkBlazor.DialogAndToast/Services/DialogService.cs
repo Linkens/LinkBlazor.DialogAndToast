@@ -18,6 +18,7 @@ namespace LinkBlazor
                 return reference;
             }
         }
+        public event EventHandler<DialogServiceNavigationEventArgs> OnNavigate;
         NavigationManager UriHelper { get; set; } = null!;
         IJSRuntime JSRuntime { get; set; }
         public DialogService(NavigationManager uriHelper, IJSRuntime jsRuntime)
@@ -33,9 +34,13 @@ namespace LinkBlazor
 
         private void UriHelper_OnLocationChanged(object sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
         {
-
-            while (dialogs.Any())
+            bool Cancel = false;
+            while (dialogs.Any() && !Cancel)
             {
+                var dialog = dialogs.LastOrDefault();
+                var Args = new DialogServiceNavigationEventArgs(e, dialog);
+                OnNavigate?.Invoke(this, Args);
+                if (Args.PreventClose) break;
                 Close();
             }
 
