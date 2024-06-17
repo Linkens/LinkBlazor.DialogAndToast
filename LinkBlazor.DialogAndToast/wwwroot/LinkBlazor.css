@@ -5,6 +5,7 @@
     --lb-dialog-background-color: white;
     --lb-dialog-shadow: 0 22px 64px 0 rgba(0, 0, 0, 0.22);
     --lb-dialog-border-radius: var(--lb-border-radius);
+    --lb-toast-zindex: 1002;
 }
 
 .lb-dialog-wrapper {
@@ -104,6 +105,13 @@
 
 /*TOAST*/
 
+.lb-toast {
+    position: fixed;
+    z-index: var(--lb-toast-zindex);
+    top: 100px;
+    float: right;
+    right: 10px;
+}
 .lb-toast-message {
     position: relative;
     width: 250px;

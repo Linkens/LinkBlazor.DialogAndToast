@@ -1,21 +1,22 @@
-﻿@using System.Timers
+﻿@using Microsoft.Extensions.Localization
+@using System.Timers
 @if (Visible)
 {
     <div class="lb-toast-message" style="@(Message.Click != null || Message.CloseOnClick ? "cursor: pointer;" : ";") @Style">
         <div aria-live="polite" class="@GetMessageCssClasses()">
-            <div class="lb-toast-item @(string.IsNullOrEmpty(Message.Detail) ? "lb-toast-titlebar-solo" : "")">
+            <div class="lb-toast-item @(string.IsNullOrEmpty(GetDetail()) ? "lb-toast-titlebar-solo" : "")">
                 <div @onclick="NotificationClicked">
                     <div class="lb-toast-titlebar">
                         <div class="lb-toast-title">
-                            @((MarkupString)Message.Summary)
+                            @((MarkupString)GetSummary())
                         </div>
                         <a @onclick:preventDefault="true" class="lb-toast-titlebar-close" @onclick=@Close role="button">
                             <CrossIcon />
                         </a>
                     </div>
-                    @if (!string.IsNullOrEmpty(Message.Detail))
+                    @if (!string.IsNullOrEmpty(GetDetail()))
                     {
-                        <p class="lb-toast-detail">@((MarkupString)Message.Detail)</p>
+                        <p class="lb-toast-detail">@((MarkupString)GetDetail())</p>
                     }
                 </div>
                 <div style="clear: both;"></div>
@@ -51,6 +52,7 @@
     public bool Visible { get; set; } = true;
 
     [Parameter] public LinkBlazor.ToastMessage Message { get; set; } = null!;
+    [Parameter] public IStringLocalizer Localizer { get; set; } = null!;
 
     [Parameter]
     public string Style { get; set; }
@@ -59,6 +61,19 @@
     {
         Service.Messages.Remove(Message);
         Message?.Close?.Invoke(Message);
+    }
+
+    protected string GetDetail()
+    {
+        if (Localizer != null && Message.Detail != null)
+            Localizer[Message.Detail];
+        else Message.Detail;
+    }
+    protected string GetSummary()
+    {
+        if (Localizer != null && Message.Summary != null)
+            Localizer[Message.Summary];
+        else Message.Summary;
     }
 
     protected override void OnInitialized()
