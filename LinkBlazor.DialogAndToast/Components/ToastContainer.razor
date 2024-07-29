@@ -16,7 +16,7 @@
                     </div>
                     @if (!string.IsNullOrEmpty(GetDetail()))
                     {
-                        <p class="lb-toast-detail">@((MarkupString)GetDetail())</p>
+                        <div class="lb-toast-detail">@((MarkupString)GetDetail())</div>
                     }
                 </div>
                 <div style="clear: both;"></div>
@@ -66,14 +66,14 @@
     protected string GetDetail()
     {
         if (Localizer != null && Message.Detail != null)
-            Localizer[Message.Detail];
-        else Message.Detail;
+            return Localizer[Message.Detail];
+        else return Message.Detail;
     }
     protected string GetSummary()
     {
         if (Localizer != null && Message.Summary != null)
-            Localizer[Message.Summary];
-        else Message.Summary;
+            return Localizer[Message.Summary];
+        else return Message.Summary;
     }
 
     protected override void OnInitialized()

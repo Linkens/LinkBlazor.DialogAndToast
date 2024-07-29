@@ -161,7 +161,7 @@
 }
 
 .lb-toast-detail {
-    padding: 0px 1rem;
+    padding: 1em 1em 1em 0.5em;
 }
 
 .lb-message-error :is(.lb-toast-item, .lb-toast-titlebar-close) {
