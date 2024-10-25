@@ -6,6 +6,8 @@
     --lb-dialog-shadow: 0 22px 64px 0 rgba(0, 0, 0, 0.22);
     --lb-dialog-border-radius: var(--lb-border-radius);
     --lb-toast-zindex: 1002;
+    --lb-button-ok: #48ce4aee;
+    --lb-button-cancel: #e2d439ee;
 }
 
 .lb-dialog-wrapper {
@@ -112,6 +114,7 @@
     float: right;
     right: 10px;
 }
+
 .lb-toast-message {
     position: relative;
     width: 250px;
@@ -185,8 +188,36 @@
 }
 
 
-
 .lb-no-scroll {
     overflow: hidden;
     padding-right: 15px
+}
+
+.lb-Ok, .lb-Cancel {
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.lb-Ok {
+    background-color: var(--lb-button-ok);
+}
+
+    .lb-Ok:hover {
+        background-color: color-mix(in srgb,var(--lb-button-ok),white 50%);
+    }
+
+.lb-Cancel {
+    background-color: var(--lb-button-cancel);
+}
+
+    .lb-Cancel:hover {
+        background-color: color-mix(in srgb,var(--lb-button-cancel),white 50%);
+    }
+
+.lb-confirm-btn-container {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: end;
+    gap: 4px;
 }

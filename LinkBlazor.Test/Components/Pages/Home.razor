@@ -11,6 +11,7 @@ Welcome to your new app.
 
 <button @onclick="()=>Show()">Test Dialog</button>
 <button @onclick="@(()=>Show("With Title"))">Test Title</button>
+<button @onclick="@(() => Dialog.Confirm("Coucou"))">Confirm</button>
 <button @onclick="()=>ShowToast(ToastSeverity.Info)">Test Info</button>
 <button @onclick="()=>ShowToast(ToastSeverity.Warning)">Test Warning</button>
 <button @onclick="()=>ShowToast(ToastSeverity.Error)">Test Error</button>

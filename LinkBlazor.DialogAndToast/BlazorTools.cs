@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using LinkBlazor.Components;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,12 @@ namespace LinkBlazor
         public static void AddToastService(this IServiceCollection services)
         {
             services.AddScoped<ToastService>();
+        }
+        public static async Task<bool> Confirm(this DialogService dialogService, string message, ConfirmDialogOptions? options = null)
+        {
+            var Res = await dialogService.OpenAsync<ConfirmDialog>(new() { { "Message", message }, { "Options", options ?? new ConfirmDialogOptions() } });
+            if (Res == null) return false;
+            return Res == true;
         }
     }
 }

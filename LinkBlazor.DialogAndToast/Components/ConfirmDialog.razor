@@ -1,0 +1,10 @@
+﻿@inject DialogService Dialog;
+<div>@Message</div>
+<div class="lb-confirm-btn-container">
+    <button @onclick="() => Dialog.Close(null)" class="@Options.CancelClass">@Options.CancelText</button>
+    <button @onclick="() => Dialog.Close(true)" class="@Options.OkClass">@Options.OkText</button>
+</div>
+@code {
+    [Parameter] public string Message { get; set; } = default!;
+    [Parameter] public ConfirmDialogOptions Options { get; set; } = new();
+}
