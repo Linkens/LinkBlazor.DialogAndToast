@@ -1,16 +1,19 @@
 ﻿
 window.LinkBlazor = {
-   
-    OpenDialog: function (options, dialogService, dialog) {
+
+    OpenDialog: function (options, dialogService, dialog, dialogID) {
         if (LinkBlazor.closeAllPopups) {
             LinkBlazor.closeAllPopups();
         }
         LinkBlazor.dialogService = dialogService;
         if (
-          document.documentElement.scrollHeight >
-          document.documentElement.clientHeight
+            document.documentElement.scrollHeight >
+            document.documentElement.clientHeight
         ) {
-          document.body.classList.add('lb-no-scroll');
+            document.body.classList.add('lb-no-scroll');
+        }
+        if (options.canDrag) {
+            LinkBlazor.MakeDragElement(dialogID);
         }
 
         setTimeout(function () {
@@ -27,6 +30,45 @@ window.LinkBlazor = {
         document.removeEventListener('keydown', LinkBlazor.KeyCloseDialog);
         if (options.closeDialogOnEsc) {
             document.addEventListener('keydown', LinkBlazor.KeyCloseDialog);
+        }
+    },
+    MakeDragElement: function (dialogID) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        var head = document.getElementById(dialogID + "-header");
+        let elmnt = document.getElementById(dialogID);
+        if (head != null)
+            head.onmousedown = dragMouseDown;
+        else
+            elmnt.onmousedown = dragMouseDown;
+
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // get the mouse cursor position at startup:
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = StopDragElement;
+            // call a function whenever the cursor moves:
+            document.onmousemove = DoDrag;
+        }
+
+        function DoDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // calculate the new cursor position:
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // set the element's new position:
+            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        }
+
+        function StopDragElement() {
+            /* stop moving when mouse button is released:*/
+            document.onmouseup = null;
+            document.onmousemove = null;
         }
     },
     CloseDialog: function () {

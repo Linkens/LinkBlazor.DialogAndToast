@@ -3,22 +3,20 @@ using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using System.Threading.Tasks;
 
-namespace LinkBlazor
-{
-    public class DialogService : IDisposable
-    {
+namespace LinkBlazor {
+    public class DialogService : IDisposable {
         private DotNetObjectReference<DialogService>? reference;
         internal DotNetObjectReference<DialogService> Reference
         {
-            get
-            {
+            get {
                 reference ??= DotNetObjectReference.Create(this);
                 return reference;
             }
         }
-        public event EventHandler<DialogServiceNavigationEventArgs> OnNavigate;
+        public event EventHandler<DialogServiceNavigationEventArgs> OnNavigate = default!;
         NavigationManager UriHelper { get; set; } = null!;
         IJSRuntime JSRuntime { get; set; }
         public DialogService(NavigationManager uriHelper, IJSRuntime jsRuntime)
@@ -26,17 +24,15 @@ namespace LinkBlazor
             UriHelper = uriHelper;
             JSRuntime = jsRuntime;
 
-            if (UriHelper != null)
-            {
+            if (UriHelper != null) {
                 UriHelper.LocationChanged += UriHelper_OnLocationChanged;
             }
         }
 
-        private void UriHelper_OnLocationChanged(object sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+        private void UriHelper_OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
         {
             bool Cancel = false;
-            while (dialogs.Any() && !Cancel)
-            {
+            while (dialogs.Any() && !Cancel) {
                 var dialog = dialogs.LastOrDefault();
                 var Args = new DialogServiceNavigationEventArgs(e, dialog);
                 OnNavigate?.Invoke(this, Args);
@@ -45,7 +41,7 @@ namespace LinkBlazor
             }
 
         }
-        public event Action<dynamic?>? OnClose;
+        public event Action<dynamic?, DialogOptions?>? OnClose;
         public event Action? OnRefresh;
 
         public event Action<Type, Dictionary<string, object>?, DialogOptions>? OnOpen;
@@ -63,11 +59,12 @@ namespace LinkBlazor
         /// <param name="parameters">The dialog parameters. Passed as property values of <typeparamref name="T" />.</param>
         /// <param name="options">The dialog options.</param>
         /// <returns>The value passed as argument to <see cref="Close" />.</returns>
-        public virtual Task<dynamic?> OpenAsync<T>(Dictionary<string, object> parameters = null, DialogOptions options = null) where T : ComponentBase
+        public virtual Task<dynamic?> OpenAsync<T>(Dictionary<string, object>? parameters = null, DialogOptions? options = null) where T : ComponentBase
         {
             if (OnOpen == null) throw new ArgumentNullException(nameof(OpenAsync), "<LinkBlazorDialog /> needs to be added to the main layout of your application/site.");
             var Task = new TaskCompletionSource<dynamic?>();
-
+            if (options != null) options.TaskHash = Task.GetHashCode();
+            else options = new DialogOptions { TaskHash = Task.GetHashCode() };
             Tasks.Add(Task);
 
             OpenDialog<T>(parameters, options);
@@ -78,9 +75,9 @@ namespace LinkBlazor
 
         private void OpenDialog<T>(Dictionary<string, object>? parameters, DialogOptions? options)
         {
-            dialogs.Add(new object());
-            OnOpen?.Invoke(typeof(T), parameters, new DialogOptions()
-            {
+            var NewDialog = new object();
+            dialogs.Add(NewDialog);
+            OnOpen?.Invoke(typeof(T), parameters, new DialogOptions() {
                 Width = options != null && !string.IsNullOrEmpty(options.Width) ? options.Width : "600px",
                 Left = options != null && !string.IsNullOrEmpty(options.Left) ? options.Left : "",
                 Top = options != null && !string.IsNullOrEmpty(options.Top) ? options.Top : "",
@@ -89,13 +86,16 @@ namespace LinkBlazor
                 ShowTitle = options != null ? options.ShowTitle || !string.IsNullOrEmpty(options.Title) : true,
                 Title = options != null ? options.Title : string.Empty,
                 ShowClose = options != null ? options.ShowClose : true,
-
+                CanDrag = options != null ? options.CanDrag : false,
+                ShowMask = options != null ? options.ShowMask : true,
                 Style = options != null ? options.Style : "",
                 CloseDialogOnOverlayClick = options != null ? options.CloseDialogOnOverlayClick : false,
                 CloseDialogOnEsc = options != null ? options.CloseDialogOnEsc : true,
                 CssClass = options != null ? options.CssClass : "",
                 WrapperCssClass = options != null ? options.WrapperCssClass : "",
                 CloseTabIndex = options != null ? options.CloseTabIndex : 0,
+                TaskHash = options != null ? options.TaskHash : 0,
+                ObjectHash = NewDialog.GetHashCode(),
             });
         }
 
@@ -104,19 +104,17 @@ namespace LinkBlazor
         /// </summary>
         /// <param name="result">The result.</param>
         [JSInvokable("DialogService.Close")]
-        public virtual void Close(dynamic? result = null)
+        public virtual void Close(dynamic? result = null, DialogOptions? Option = null)
         {
-            var dialog = dialogs.LastOrDefault();
+            var dialog = Option == null ? dialogs.LastOrDefault() : dialogs.First(d => d.GetHashCode() == Option.ObjectHash);
 
-            if (dialog != null)
-            {
-                OnClose?.Invoke(result);
+            if (dialog != null) {
+                OnClose?.Invoke(result, Option);
                 dialogs.Remove(dialog);
             }
 
-            var Task = Tasks.LastOrDefault();
-            if (Task != null && Task.Task != null && !Task.Task.IsCompleted)
-            {
+            var Task = Option == null ? Tasks.LastOrDefault() : Tasks.First(t => t.GetHashCode() == Option.TaskHash);
+            if (Task != null && Task.Task != null && !Task.Task.IsCompleted) {
                 Tasks.Remove(Task);
                 Task.SetResult(result);
             }
@@ -129,10 +127,11 @@ namespace LinkBlazor
             UriHelper.LocationChanged -= UriHelper_OnLocationChanged;
         }
     }
-    public abstract class DialogOptionsBase
-    {
+    public abstract class DialogOptionsBase {
         public bool ShowTitle { get; set; } = true;
         public bool ShowClose { get; set; } = true;
+        public bool CanDrag { get; set; } = false;
+        public bool ShowMask { get; set; } = true;
         public string? Width { get; set; }
         public string? Height { get; set; }
         public string? Style { get; set; }
@@ -141,18 +140,19 @@ namespace LinkBlazor
         public string? WrapperCssClass { get; set; }
         public int CloseTabIndex { get; set; } = 0;
     }
-    public class DialogOptions : DialogOptionsBase
-    {
+    public class DialogOptions : DialogOptionsBase {
         public string? Left { get; set; }
         public string? Top { get; set; }
         public string? Bottom { get; set; }
         public string? Title { get; set; }
         public bool CloseDialogOnEsc { get; set; } = true;
+        internal int TaskHash { get; set; }
+        internal int ObjectHash { get; set; }
     }
-    public class Dialog
-    {
-        public Type Type { get; set; }
+    public class Dialog {
+        public Type Type { get; set; } = default!;
         public Dictionary<string, object>? Parameters { get; set; }
         public DialogOptions Options { get; set; } = null!;
+        public int Index { get; set; }
     }
 }

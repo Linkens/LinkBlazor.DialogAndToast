@@ -3,11 +3,11 @@
 @using System.Reflection;
 @inject IJSRuntime JSRuntime
 @implements IDisposable
-<div class="@WrapperCssClass">
-    <div @ref="dialog" class="@CssClass" role="dialog" style=@Style>
+<div id="@(ID +"-wrapper")" class="@WrapperCssClass">
+    <div id="@ID" @ref="dialog" class="@CssClass" role="dialog" style=@Style>
         @if (Dialog.Options.ShowTitle)
         {
-            <div class="lb-dialog-titlebar">
+            <div id="@(ID +"-header")" class="lb-dialog-titlebar">
                 @if (!string.IsNullOrEmpty(Dialog.Options.Title))
                 {
                     <div class="lb-dialog-title" style="display: inline" id="rz-dialog-0-label">
@@ -52,10 +52,11 @@
     }
 
     [Parameter]
-    public Dialog Dialog { get; set; }
-
+    public Dialog Dialog { get; set; } = default!;
     [Parameter]
-    public bool ShowMask { get; set; } = true;
+    public bool ShowMask { get; set; } = false;
+
+    protected string ID = Guid.NewGuid().ToString();
 
     RenderFragment ChildContent => new RenderFragment(builder =>
         {
@@ -74,11 +75,11 @@
             builder.CloseComponent();
         });
 
-    object reference;
+    object reference = default!;
 
     void Close()
     {
-        Service.Close();
+        Service.Close(null, Dialog.Options);
     }
 
     string CssClass
@@ -95,7 +96,7 @@
         get
         {
             var baseCss = "lb-dialog-wrapper";
-            return string.IsNullOrWhiteSpace(Dialog.Options.WrapperCssClass) ? baseCss : $"{baseCss} {Dialog.Options.WrapperCssClass}";
+            return string.IsNullOrWhiteSpace(Dialog.Options.WrapperCssClass) ? baseCss : Dialog.Options.WrapperCssClass;
         }
     }
 
@@ -114,7 +115,7 @@
     }
 
     [Inject]
-    DialogService Service { get; set; }
+    DialogService Service { get; set; } = default!;
     protected override void OnInitialized()
     {
         Service.OnRefresh += OnRefresh;
@@ -153,6 +154,9 @@
                     Top = options != null ? options.Top : null,
                     Bottom = options != null ? options.Bottom : null,
                     ShowTitle = options != null ? options.ShowTitle : true,
+                    Title = options != null ? options.Title : string.Empty,
+                    CanDrag = options != null ? options.CanDrag : true,
+                    ShowMask = options != null ? options.ShowMask : true,
                     ShowClose = options != null ? options.ShowClose : true,
                     Style = options != null ? options.Style : "",
                     CloseDialogOnOverlayClick = options != null ? options.CloseDialogOnOverlayClick : false,
@@ -161,7 +165,7 @@
                     CloseTabIndex = options != null ? options.CloseTabIndex : 0,
                 };
 
-            await JSRuntime.InvokeAsync<string>("LinkBlazor.OpenDialog", dialogOptions, Service.Reference, DotNetReference);
+            await JSRuntime.InvokeAsync<string>("LinkBlazor.OpenDialog", dialogOptions, Service.Reference, DotNetReference, ID);
         }
     }
 

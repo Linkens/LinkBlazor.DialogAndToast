@@ -5,12 +5,12 @@
 
 @foreach (var dialog in dialogs)
 {
-    <DialogContainer @key=@dialog Dialog=@dialog ShowMask=@(dialog==dialogs.LastOrDefault()) />
+    <DialogContainer @key=@dialog Dialog=@dialog ShowMask=@(dialog==dialogs.LastOrDefault() && dialog.Options.ShowMask) />
 }
 
 @code {
     [Inject]
-    DialogService Service { get; set; }
+    DialogService Service { get; set; } = default!;
 
     List<Dialog> dialogs = new List<Dialog>();
 
@@ -21,9 +21,9 @@
         await InvokeAsync(() => { StateHasChanged(); });
     }
 
-    public async Task Close(dynamic? result)
+    public async Task Close(dynamic? result, DialogOptions? options )
     {
-        var lastDialog = dialogs.LastOrDefault();
+        var lastDialog = options == null ? dialogs.LastOrDefault() : dialogs.First(d => d.Options.TaskHash == options.TaskHash);
         if (lastDialog != null)
         {
             dialogs.Remove(lastDialog);
@@ -46,13 +46,13 @@
         Service.OnOpen += OnOpen;
         Service.OnClose += OnClose;
     }
-    async void OnOpen(Type type, Dictionary<string, object>? parameters, DialogOptions options)
+    async void OnOpen(Type type, Dictionary<string, object>? parameters, DialogOptions? options)
     {
         await Open(type, parameters, options);
     }
 
-    async void OnClose(dynamic? result)
+    async void OnClose(dynamic? result, DialogOptions? options)
     {
-        await Close(result);
+        await Close(result, options);
     }
 }
