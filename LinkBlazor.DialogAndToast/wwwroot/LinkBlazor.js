@@ -15,6 +15,10 @@ window.LinkBlazor = {
         if (options.canDrag) {
             LinkBlazor.MakeDragElement(dialogID);
         }
+        if (options.multiDialog) {
+            var wrapper = document.getElementById(dialogID);
+            wrapper.onmousedown = this.BringWrapperToFront;
+        }
 
         setTimeout(function () {
             var dialogs = document.querySelectorAll('.lb-dialog-content');
@@ -31,6 +35,29 @@ window.LinkBlazor = {
         if (options.closeDialogOnEsc) {
             document.addEventListener('keydown', LinkBlazor.KeyCloseDialog);
         }
+    },
+
+    BringWrapperToFront: function (e) {
+        var dialogs = document.querySelectorAll('.lb-dialog');
+        let Min = 150000;
+        if (dialogs.length == 1) return;
+        dialogs.forEach((d) => {
+            Min = Math.min(d.style.zIndex, Min)
+        });
+        dialogs.forEach((d) => {
+            if (d.id == e.currentTarget.id) {
+                d.style.zIndex = Min + 1;
+            }
+            else {
+                d.style.zIndex = Min;
+            }
+        });
+    },
+    GetZindex: function (id) {
+        return document.getElementById(id).Zindex;
+    },
+    SetZindex: function (id, Zindex) {
+        document.getElementById(id).SetZindex(Zindex);
     },
     MakeDragElement: function (dialogID) {
         var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;

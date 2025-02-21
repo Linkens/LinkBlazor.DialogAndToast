@@ -3,8 +3,8 @@
 @using System.Reflection;
 @inject IJSRuntime JSRuntime
 @implements IDisposable
-<div id="@(ID +"-wrapper")" class="@WrapperCssClass">
-    <div id="@ID" @ref="dialog" class="@CssClass" role="dialog" style=@Style>
+<div id="@(ID +"-wrapper")" class="@WrapperCssClass" style="z-index:@Dialog.ZIndex">
+    <div id="@ID" @ref="dialog" class="@($"{CssClass}")" role="dialog" style=@($"z-index:{Dialog.ZIndex};{Style}")>
         @if (Dialog.Options.ShowTitle)
         {
             <div id="@(ID +"-header")" class="lb-dialog-titlebar">
@@ -56,7 +56,7 @@
     [Parameter]
     public bool ShowMask { get; set; } = false;
 
-    protected string ID = Guid.NewGuid().ToString();
+    public string ID => Dialog.Id;
 
     RenderFragment ChildContent => new RenderFragment(builder =>
         {
@@ -156,7 +156,7 @@
                     ShowTitle = options != null ? options.ShowTitle : true,
                     Title = options != null ? options.Title : string.Empty,
                     CanDrag = options != null ? options.CanDrag : true,
-                    ShowMask = options != null ? options.ShowMask : true,
+                    MultiDialog = options != null ? options.MultiDialog : true,
                     ShowClose = options != null ? options.ShowClose : true,
                     Style = options != null ? options.Style : "",
                     CloseDialogOnOverlayClick = options != null ? options.CloseDialogOnOverlayClick : false,

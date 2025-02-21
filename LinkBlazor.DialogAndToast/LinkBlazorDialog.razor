@@ -5,7 +5,7 @@
 
 @foreach (var dialog in dialogs)
 {
-    <DialogContainer @key=@dialog Dialog=@dialog ShowMask=@(dialog==dialogs.LastOrDefault() && dialog.Options.ShowMask) />
+    <DialogContainer @key=@dialog Dialog=@dialog ShowMask=@(dialog==dialogs.LastOrDefault() && !dialog.Options.MultiDialog) />
 }
 
 @code {
@@ -40,12 +40,15 @@
     {
         Service.OnOpen -= OnOpen;
         Service.OnClose -= OnClose;
+
     }
     protected override void OnInitialized()
     {
         Service.OnOpen += OnOpen;
         Service.OnClose += OnClose;
     }
+
+
     async void OnOpen(Type type, Dictionary<string, object>? parameters, DialogOptions? options)
     {
         await Open(type, parameters, options);

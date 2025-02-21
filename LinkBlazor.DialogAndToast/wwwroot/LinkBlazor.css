@@ -5,7 +5,7 @@
     --lb-dialog-background-color: white;
     --lb-dialog-shadow: 0 22px 64px 0 rgba(0, 0, 0, 0.22);
     --lb-dialog-border-radius: var(--lb-border-radius);
-    --lb-toast-zindex: 1002;
+    --lb-toast-zindex: 10000;
     --lb-button-ok: #48ce4aee;
     --lb-button-cancel: #e2d439ee;
 }

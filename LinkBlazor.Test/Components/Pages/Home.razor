@@ -37,6 +37,6 @@ Welcome to your new app.
     }
     protected async Task ShowDraggable()
     {
-        await Dialog.OpenAsync<TestWindow>(options: new DialogOptions { CanDrag = true, ShowMask = false , Title="Test", WrapperCssClass ="lb-empty"});
+        await Dialog.OpenAsync<TestWindow>(options: new DialogOptions { CanDrag = true, MultiDialog = true , Title="Test", WrapperCssClass ="lb-empty"});
     }
 }

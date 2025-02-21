@@ -87,7 +87,7 @@ namespace LinkBlazor {
                 Title = options != null ? options.Title : string.Empty,
                 ShowClose = options != null ? options.ShowClose : true,
                 CanDrag = options != null ? options.CanDrag : false,
-                ShowMask = options != null ? options.ShowMask : true,
+                MultiDialog = options != null ? options.MultiDialog : true,
                 Style = options != null ? options.Style : "",
                 CloseDialogOnOverlayClick = options != null ? options.CloseDialogOnOverlayClick : false,
                 CloseDialogOnEsc = options != null ? options.CloseDialogOnEsc : true,
@@ -131,7 +131,7 @@ namespace LinkBlazor {
         public bool ShowTitle { get; set; } = true;
         public bool ShowClose { get; set; } = true;
         public bool CanDrag { get; set; } = false;
-        public bool ShowMask { get; set; } = true;
+        public bool MultiDialog { get; set; } = false;
         public string? Width { get; set; }
         public string? Height { get; set; }
         public string? Style { get; set; }
@@ -154,5 +154,7 @@ namespace LinkBlazor {
         public Dictionary<string, object>? Parameters { get; set; }
         public DialogOptions Options { get; set; } = null!;
         public int Index { get; set; }
+        public int ZIndex { get; set; } = 1001;
+        public string Id { get; set; } = Guid.NewGuid().ToString();
     }
 }
