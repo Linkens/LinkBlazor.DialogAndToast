@@ -14,7 +14,7 @@
 
     List<Dialog> dialogs = new List<Dialog>();
 
-    public async Task Open(Type type, Dictionary<string, object>? parameters, DialogOptions options)
+    public async Task Open(Type type, Dictionary<string, object>? parameters, DialogOptions? options)
     {
         dialogs.Add(new Dialog() { Type = type, Parameters = parameters, Options = options });
 
