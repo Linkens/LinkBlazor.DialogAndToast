@@ -12,6 +12,7 @@ Welcome to your new app.
 
 <button @onclick="()=>Show()">Test Dialog</button>
 <button @onclick="ShowDraggable">Draggable</button>
+<button @onclick="ShowResizable">Sizable</button>
 <button @onclick="@(()=>Show("With Title"))">Test Title</button>
 <button @onclick="@(() => Dialog.Confirm("Coucou"))">Confirm</button>
 <button @onclick="()=>ShowToast(ToastSeverity.Info)">Test Info</button>
@@ -41,6 +42,9 @@ Welcome to your new app.
     }
     protected async Task ShowDraggable() {
         await Dialog.OpenAsync<TestWindow>(options: new DialogOptions { CanDrag = true, MultiDialog = true, Title = "Test", WrapperCssClass = "lb-empty" });
+    } 
+    protected async Task ShowResizable() {
+        await Dialog.OpenAsync<TestWindow>(options: new DialogOptions { Resizable = true, CanDrag =true, MultiDialog = true, Title = "Test", WrapperCssClass = "lb-empty" });
     }
     protected void Validate() {
         if (!Validator.IsModelValid(Model)) return;

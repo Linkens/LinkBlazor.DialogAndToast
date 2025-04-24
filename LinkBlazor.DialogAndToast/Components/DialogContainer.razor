@@ -110,10 +110,28 @@
             var topStyle = string.IsNullOrEmpty(Dialog.Options.Top) ? "" : $"top: {Dialog.Options.Top};";
             var leftStyle = string.IsNullOrEmpty(Dialog.Options.Left) ? "" : $"left: {Dialog.Options.Left};";
             var bottomStyle = string.IsNullOrEmpty(Dialog.Options.Bottom) ? "" : $"bottom: {Dialog.Options.Bottom};";
-            return $"{baseStyle}{widthStyle}{heightStyle}{topStyle}{leftStyle}{bottomStyle}{Dialog.Options.Style}";
+            var resizeStyle = Dialog.Options.Resizable ? "resize:both;" : "";
+            return $"{baseStyle}{widthStyle}{heightStyle}{topStyle}{leftStyle}{bottomStyle}{resizeStyle}{Dialog.Options.Style}";
         }
     }
+    /// <summary>
+    /// Called when resized.
+    /// </summary>
+    /// <param name="w">The width.</param>
+    /// <param name="h">The height.</param>
+    [JSInvokable("RadzenDialog.OnResize")]
+    public void OnResize(double w, double h) {
+        shouldRender = false;
 
+        // if (Dialog.Options.Resize != null && w != 0 && h != 0) {
+        //     Dialog.Options.Resize(new System.Drawing.Size(Convert.ToInt32(w), Convert.ToInt32(h)));
+        // }
+
+        // width = $"width: {w}px;";
+        // height = $"height: {h}px;";
+
+        shouldRender = true;
+    }
     [Inject]
     DialogService Service { get; set; } = default!;
     protected override void OnInitialized()
@@ -163,6 +181,7 @@
                     CloseDialogOnEsc = options != null ? options.CloseDialogOnEsc : true,
                     CssClass = options != null ? options.CssClass : "",
                     CloseTabIndex = options != null ? options.CloseTabIndex : 0,
+                    Resizable = options != null ? options.Resizable : false,
                 };
 
             await JSRuntime.InvokeAsync<string>("LinkBlazor.OpenDialog", dialogOptions, Service.Reference, DotNetReference, ID);

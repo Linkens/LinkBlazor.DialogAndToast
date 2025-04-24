@@ -95,6 +95,7 @@ namespace LinkBlazor {
                 WrapperCssClass = options != null ? options.WrapperCssClass : "",
                 CloseTabIndex = options != null ? options.CloseTabIndex : 0,
                 TaskHash = options != null ? options.TaskHash : 0,
+                Resizable = options != null ? options.Resizable : false,
                 ObjectHash = NewDialog.GetHashCode(),
             });
         }
@@ -132,6 +133,7 @@ namespace LinkBlazor {
         public bool ShowClose { get; set; } = true;
         public bool CanDrag { get; set; } = false;
         public bool MultiDialog { get; set; } = false;
+        public bool Resizable { get; set; } = false;
         public string? Width { get; set; }
         public string? Height { get; set; }
         public string? Style { get; set; }
