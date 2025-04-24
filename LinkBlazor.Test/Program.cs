@@ -7,10 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
-builder.Services.AddLinkBlazorServices(o => {
-    o.ErrorDuration = 500;
-    o.ErrorMessage = "Ooops";
-});
+builder.Services.AddLinkBlazorServices();
 
 var app = builder.Build();
 
