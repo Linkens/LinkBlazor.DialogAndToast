@@ -12,7 +12,8 @@ namespace LinkBlazor
     {
         public static void AddLinkBlazorServices(this IServiceCollection services)
         {
-            AddDialogService(services);           
+            AddDialogService(services);
+            AddToastService(services);
         }
         public static void AddDialogService(this IServiceCollection services)
         {
