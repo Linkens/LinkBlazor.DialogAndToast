@@ -2,6 +2,7 @@
 @rendermode InteractiveServer
 @using Microsoft.AspNetCore.Components.Web
 @using LinkBlazor
+@using System.ComponentModel.DataAnnotations
 
 <PageTitle>Home</PageTitle>
 
@@ -19,24 +20,35 @@ Welcome to your new app.
 <button @onclick="()=>ShowToast(ToastSeverity.Success)">Test Success</button>
 <button @onclick="()=>ShowToastNo(ToastSeverity.Success)"> No Detail</button>
 <button @onclick="@(()=>ShowToastNo(ToastSeverity.Success," Lorem Ipsum is simply dummy text of the printing and typesetting industry."))"> No Detail Long</button>
+
+<label>Model Name</label>
+<input @bind-value=Model.Name />
+<button @onclick=Validate>Validate Model</button>
 @code {
     [Inject] public DialogService Dialog { get; set; }
     [Inject] public ToastService Toast { get; set; }
-    protected async Task Show(string Title = null)
-    {
+    [Inject] public ValidatorService Validator { get; set; }
+    protected TestModel Model = new();
+    protected async Task Show(string Title = null) {
         var Return = await Dialog.OpenAsync<TestWindow>(options: new DialogOptions { Title = Title, CloseDialogOnOverlayClick = true, CloseDialogOnEsc = true });
     }
     protected int Index = 0;
-    protected async Task ShowToast(ToastSeverity Severity)
-    {
+    protected async Task ShowToast(ToastSeverity Severity) {
         Toast.Toast(Severity, $"{Severity.ToString()} Lorem Ipsum is", $"Detail {Index++} Lorem Ipsum is simply dummy text of the printing and typesetting industry. ", duration: 15000);
     }
-    protected async Task ShowToastNo(ToastSeverity Severity, string Title = "Bravo", string Detail = "")
-    {
+    protected async Task ShowToastNo(ToastSeverity Severity, string Title = "Bravo", string Detail = "") {
         Toast.Toast(Severity, Title, duration: 15000);
     }
-    protected async Task ShowDraggable()
-    {
-        await Dialog.OpenAsync<TestWindow>(options: new DialogOptions { CanDrag = true, MultiDialog = true , Title="Test", WrapperCssClass ="lb-empty"});
+    protected async Task ShowDraggable() {
+        await Dialog.OpenAsync<TestWindow>(options: new DialogOptions { CanDrag = true, MultiDialog = true, Title = "Test", WrapperCssClass = "lb-empty" });
     }
+    protected void Validate() {
+        if (!Validator.IsModelValid(Model)) return;
+        Toast.Toast(ToastSeverity.Success, "Bravo", "Model is valid", duration: 15000);
+    }
+
+    public class TestModel {
+        [Required, MinLength(5)] public string Name { get; set; } = default!;
+    }
+
 }

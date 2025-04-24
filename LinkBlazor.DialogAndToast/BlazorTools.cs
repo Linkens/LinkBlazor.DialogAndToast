@@ -10,18 +10,21 @@ namespace LinkBlazor
 {
     public static class BlazorTools
     {
-        public static void AddLinkBlazorServices(this IServiceCollection services)
+        public static void AddLinkBlazorServices(this IServiceCollection services, Action<ValidatorOptions>? Options = null)
         {
             AddDialogService(services);
-            AddToastService(services);
+            AddToastService(services, Options);
+            
         }
         public static void AddDialogService(this IServiceCollection services)
         {
             services.AddScoped<DialogService>();
         }
-        public static void AddToastService(this IServiceCollection services)
+        public static void AddToastService(this IServiceCollection services, Action<ValidatorOptions>? Options = null)
         {
+            ValidatorService._optionsModificator = Options;
             services.AddScoped<ToastService>();
+            services.AddScoped<ValidatorService>();
         }
         public static async Task<bool> Confirm(this DialogService dialogService, string message, ConfirmDialogOptions? options = null)
         {
