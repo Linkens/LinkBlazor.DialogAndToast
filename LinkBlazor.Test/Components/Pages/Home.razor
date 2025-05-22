@@ -13,6 +13,7 @@ Welcome to your new app.
 <button @onclick="()=>Show()">Test Dialog</button>
 <button @onclick="ShowDraggable">Draggable</button>
 <button @onclick="ShowResizable">Sizable</button>
+<button @onclick="ShowIdentified">Identified</button>
 <button @onclick="@(()=>Show("With Title"))">Test Title</button>
 <button @onclick="@(() => Dialog.Confirm("Coucou"))">Confirm</button>
 <button @onclick="()=>ShowToast(ToastSeverity.Info)">Test Info</button>
@@ -31,7 +32,7 @@ Welcome to your new app.
     [Inject] public ValidatorService Validator { get; set; }
     protected TestModel Model = new();
     protected async Task Show(string Title = null) {
-        var Return = await Dialog.OpenAsync<TestWindow>(options: new DialogOptions { Title = Title, CloseDialogOnOverlayClick = true, CloseDialogOnEsc = true });
+        var Return = await Dialog.OpenAsync<TestWindow>(options: new DialogOptions { Title = Title, CloseDialogOnOverlayClick = true, CloseDialogOnEsc = true, ZIndex = 10000 });
     }
     protected int Index = 0;
     protected async Task ShowToast(ToastSeverity Severity) {
@@ -44,7 +45,17 @@ Welcome to your new app.
         await Dialog.OpenAsync<TestWindow>(options: new DialogOptions { CanDrag = true, MultiDialog = true, Title = "Test", WrapperCssClass = "lb-empty" });
     } 
     protected async Task ShowResizable() {
-        await Dialog.OpenAsync<TestWindow>(options: new DialogOptions { Resizable = true, CanDrag =true, MultiDialog = true, Title = "Test", WrapperCssClass = "lb-empty" });
+        await Dialog.OpenAsync<TestWindow>(options: new DialogOptions { Resizable = true, CanDrag =true, MultiDialog = true, Title = "Test", WrapperCssClass = "lb-empty"});
+    }
+    protected async Task ShowIdentified() {
+        var Ig = Guid.NewGuid();
+        Dialog.OnClose += (result, options) => {
+            if (options != null && options.Identifier == Ig) {
+                Toast.Toast(ToastSeverity.Info, "Bravo", "Dialog closed", duration: 15000);
+            }
+        };
+        await Dialog.OpenAsync<TestWindow>(options: new DialogOptions { Resizable = true, CanDrag = true, MultiDialog = true, Title = "Test", WrapperCssClass = "lb-empty", Identifier = Ig });
+     
     }
     protected void Validate() {
         if (!Validator.IsModelValid(Model)) return;

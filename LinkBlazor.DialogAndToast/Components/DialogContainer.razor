@@ -3,8 +3,8 @@
 @using System.Reflection;
 @inject IJSRuntime JSRuntime
 @implements IDisposable
-<div id="@(ID +"-wrapper")" class="@WrapperCssClass" style="z-index:@Dialog.ZIndex">
-    <div id="@ID" @ref="dialog" class="@($"{CssClass}")" role="dialog" style=@($"z-index:{Dialog.ZIndex};{Style}")>
+<div id="@(ID +"-wrapper")" class="@WrapperCssClass" style="z-index:@(Dialog.Options.ZIndex ?? Dialog.ZIndex)">
+    <div id="@ID" @ref="dialog" class="@($"{CssClass}")" role="dialog" style=@($"z-index:{Dialog.Options.ZIndex ?? Dialog.ZIndex};{Style}")>
         @if (Dialog.Options.ShowTitle)
         {
             <div id="@(ID +"-header")" class="lb-dialog-titlebar">
@@ -182,6 +182,8 @@
                     CssClass = options != null ? options.CssClass : "",
                     CloseTabIndex = options != null ? options.CloseTabIndex : 0,
                     Resizable = options != null ? options.Resizable : false,
+                    ZIndex = options != null ? options.ZIndex : null,
+                    Identifier = options != null ? options.Identifier : null,
                 };
 
             await JSRuntime.InvokeAsync<string>("LinkBlazor.OpenDialog", dialogOptions, Service.Reference, DotNetReference, ID);

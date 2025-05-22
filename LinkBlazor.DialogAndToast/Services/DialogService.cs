@@ -96,6 +96,8 @@ namespace LinkBlazor {
                 CloseTabIndex = options != null ? options.CloseTabIndex : 0,
                 TaskHash = options != null ? options.TaskHash : 0,
                 Resizable = options != null ? options.Resizable : false,
+                ZIndex = options != null ? options.ZIndex : null,
+                Identifier = options != null ? options.Identifier : null,
                 ObjectHash = NewDialog.GetHashCode(),
             });
         }
@@ -147,6 +149,8 @@ namespace LinkBlazor {
         public string? Top { get; set; }
         public string? Bottom { get; set; }
         public string? Title { get; set; }
+        public int? ZIndex { get; set; }
+        public Guid? Identifier { get; set; }
         public bool CloseDialogOnEsc { get; set; } = true;
         internal int TaskHash { get; set; }
         internal int ObjectHash { get; set; }
