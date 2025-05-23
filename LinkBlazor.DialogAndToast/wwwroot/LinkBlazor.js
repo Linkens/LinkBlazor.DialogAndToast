@@ -6,10 +6,7 @@ window.LinkBlazor = {
             LinkBlazor.closeAllPopups();
         }
         LinkBlazor.dialogService = dialogService;
-        if (
-            document.documentElement.scrollHeight >
-            document.documentElement.clientHeight
-        ) {
+        if (document.documentElement.scrollHeight > document.documentElement.clientHeight && !options.canDrag) {
             document.body.classList.add('lb-no-scroll');
         }
         if (options.canDrag) {
