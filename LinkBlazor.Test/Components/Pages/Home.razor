@@ -45,7 +45,7 @@ Welcome to your new app.
         await Dialog.OpenAsync<TestWindow>(options: new DialogOptions { CanDrag = true, MultiDialog = true, Title = "Test", WrapperCssClass = "lb-empty" });
     } 
     protected async Task ShowResizable() {
-        await Dialog.OpenAsync<TestWindow>(options: new DialogOptions { Resizable = true, CanDrag =true, MultiDialog = true, Title = "Test", WrapperCssClass = "lb-empty"});
+        await Dialog.OpenAsync<TestWindow>(options: new DialogOptions { Resizable = true, CanDrag =true, MultiDialog = true, WrapperCssClass = "lb-empty"});
     }
     protected async Task ShowIdentified() {
         var Ig = Guid.NewGuid();

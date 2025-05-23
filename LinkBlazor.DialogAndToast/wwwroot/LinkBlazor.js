@@ -70,6 +70,7 @@ window.LinkBlazor = {
 
         function dragMouseDown(e) {
             e = e || window.event;
+            if (!e.target.classList.contains("lb-dialog-drag")) return;
             e.preventDefault();
             // get the mouse cursor position at startup:
             pos3 = e.clientX;

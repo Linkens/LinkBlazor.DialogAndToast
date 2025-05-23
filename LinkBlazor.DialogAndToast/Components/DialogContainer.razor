@@ -5,18 +5,15 @@
 @implements IDisposable
 <div id="@(ID +"-wrapper")" class="@WrapperCssClass" style="z-index:@(Dialog.Options.ZIndex ?? Dialog.ZIndex)">
     <div id="@ID" @ref="dialog" class="@($"{CssClass}")" role="dialog" style=@($"z-index:{Dialog.Options.ZIndex ?? Dialog.ZIndex};{Style}")>
-        @if (Dialog.Options.ShowTitle)
-        {
-            <div id="@(ID +"-header")" class="lb-dialog-titlebar @(Dialog.Options.CanDrag ? "lb-dialog-draggable" : "")">
+        @if (Dialog.Options.ShowTitle) {
+            <div id="@(ID +"-header")" class="lb-dialog-titlebar @(Dialog.Options.CanDrag ? "lb-dialog-draggable lb-dialog-drag" : "")">
                 <div class="lb-top-dialog">
-                    @if (!string.IsNullOrEmpty(Dialog.Options.Title))
-                    {
-                        <div class="lb-dialog-title" style="display: inline" id="rz-dialog-0-label">
+                    <div class="lb-dialog-title lb-dialog-drag" style="display: inline" id="lb-dialog-0-label">
+                        @if (!string.IsNullOrEmpty(Dialog.Options.Title)) {
                             @((MarkupString)Dialog.Options.Title)
-                        </div>
-                    }
-                    @if (Dialog.Options.ShowClose)
-                    {
+                        }
+                    </div>
+                    @if (Dialog.Options.ShowClose) {
                         <a @onclick:preventDefault="true" class="lb-dialog-titlebar-close" @onclick=@Close role="button" tabindex=@Dialog.Options.CloseTabIndex>
                             <CrossIcon />
                         </a>
@@ -27,9 +24,7 @@
                 </div>
             </div>
 
-        }
-        else
-        {
+        } else {
 
             <div class="lb-dialog-content">
                 @ChildContent
@@ -37,14 +32,10 @@
         }
     </div>
 
-    @if (ShowMask)
-    {
-        @if (Dialog.Options.CloseDialogOnOverlayClick)
-        {
+    @if (ShowMask) {
+        @if (Dialog.Options.CloseDialogOnOverlayClick) {
             <div style="cursor:pointer;" @onclick="@Close" class="lb-dialog-mask"></div>
-        }
-        else
-        {
+        } else {
             <div class="lb-dialog-mask" style="pointer-events: none;"></div>
         }
     }
@@ -55,8 +46,7 @@
     ElementReference dialog;
 
     bool shouldRender = true;
-    protected override bool ShouldRender()
-    {
+    protected override bool ShouldRender() {
         return shouldRender;
     }
 
@@ -67,14 +57,11 @@
 
     public string ID => Dialog.Id;
 
-    RenderFragment ChildContent => new RenderFragment(builder =>
-    {
+    RenderFragment ChildContent => new RenderFragment(builder => {
         builder.OpenComponent(0, Dialog.Type);
 
-        if (Dialog.Parameters != null)
-        {
-            foreach (var parameter in Dialog.Parameters)
-            {
+        if (Dialog.Parameters != null) {
+            foreach (var parameter in Dialog.Parameters) {
                 builder.AddAttribute(1, parameter.Key, parameter.Value);
             }
         }
@@ -86,15 +73,13 @@
 
     object reference = default!;
 
-    void Close()
-    {
+    void Close() {
         Service.Close(null, Dialog.Options);
     }
 
     string CssClass
     {
-        get
-        {
+        get {
             var baseCss = "lb-dialog";
             if (Dialog.Options.CanDrag) baseCss += " lb-dialog-drag";
             return string.IsNullOrEmpty(Dialog.Options.CssClass) ? baseCss : $"{baseCss} {Dialog.Options.CssClass}";
@@ -103,8 +88,7 @@
 
     string WrapperCssClass
     {
-        get
-        {
+        get {
             var baseCss = "lb-dialog-wrapper";
             return string.IsNullOrWhiteSpace(Dialog.Options.WrapperCssClass) ? baseCss : Dialog.Options.WrapperCssClass;
         }
@@ -112,8 +96,7 @@
 
     string Style
     {
-        get
-        {
+        get {
             var baseStyle = "";
             var widthStyle = string.IsNullOrEmpty(Dialog.Options.Width) ? "" : $"width: {Dialog.Options.Width};";
             var heightStyle = string.IsNullOrEmpty(Dialog.Options.Height) ? "" : $"height: {Dialog.Options.Height};";
@@ -144,38 +127,31 @@
     }
     [Inject]
     DialogService Service { get; set; } = default!;
-    protected override void OnInitialized()
-    {
+    protected override void OnInitialized() {
         Service.OnRefresh += OnRefresh;
     }
 
-    void OnRefresh()
-    {
+    void OnRefresh() {
         var stateHasChanged = reference?.GetType().GetMethod("StateHasChanged", BindingFlags.NonPublic | BindingFlags.Instance);
 
-        InvokeAsync(() =>
-        {
+        InvokeAsync(() => {
             StateHasChanged();
             stateHasChanged?.Invoke(reference, null);
         })
         .ConfigureAwait(false);
     }
 
-    public void Dispose()
-    {
+    public void Dispose() {
         Service.OnRefresh -= OnRefresh;
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
         await base.OnAfterRenderAsync(firstRender);
 
-        if (firstRender)
-        {
+        if (firstRender) {
             var options = Dialog.Options;
 
-            var dialogOptions = new DialogOptions()
-                {
+            var dialogOptions = new DialogOptions() {
                     Width = options != null ? !string.IsNullOrEmpty(options.Width) ? options.Width : "" : "",
                     Height = options != null ? options.Height : null,
                     Left = options != null ? options.Left : null,
@@ -203,10 +179,8 @@
     private DotNetObjectReference<DialogContainer>? _DotNetReference;
     protected DotNetObjectReference<DialogContainer> DotNetReference
     {
-        get
-        {
-            if (_DotNetReference == null)
-            {
+        get {
+            if (_DotNetReference == null) {
                 _DotNetReference = DotNetObjectReference.Create(this);
             }
 
