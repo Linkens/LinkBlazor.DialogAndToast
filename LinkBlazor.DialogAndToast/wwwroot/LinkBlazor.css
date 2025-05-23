@@ -8,6 +8,8 @@
     --lb-toast-zindex: 10000;
     --lb-button-ok: #48ce4aee;
     --lb-button-cancel: #e2d439ee;
+    --lb-draggable-background: #c3e1f7ff;
+    --lb-draggable-border: #a4d3f5ff;
 }
 
 .lb-dialog-wrapper {
@@ -29,7 +31,6 @@
     flex-direction: column;
     min-width: 150px;
     max-height: 100%;
-    min-height: 150px;
     z-index: var(--lb-dialog-zindex);
     opacity: 1;
     background-color: var(--lb-dialog-background-color);
@@ -37,14 +38,32 @@
     border-radius: var(--lb-dialog-border-radius);
 }
 
+.lb-dialog-draggable {
+    padding: 0 5px 5px 5px;
+    background-color: var(--lb-draggable-background);
+    border: solid 2px var(--lb-draggable-border);
+    border-radius:3px;
+}
+
 .lb-dialog-content {
     flex: 0 1 auto;
     padding: var(--lb-dialog-content-padding);
     overflow: auto;
+    height:100%;
+}
+
+.lb-top-dialog {
+    display: flex;
+}
+
+.lb-dialog-draggable .lb-dialog-content {
+    padding: 0;
+    background-color: var(--lb-dialog-background-color);
+
 }
 
 @media (max-width: 768px) {
-    .lb-dialog:not(.rz-dialog-confirm):not(.rz-dialog-alert) {
+    .lb-dialog:not(.lb-dialog-drag) {
         position: absolute;
         width: 100% !important;
         top: 0px !important;
@@ -55,7 +74,9 @@
 .lb-dialog-titlebar {
     position: relative;
     display: flex;
-    justify-content: end;
+    flex-direction: column;
+    justify-content: start;
+    height:100%;
 }
 
 .lb-dialog-titlebar-close, .lb-toast-titlebar-close {
