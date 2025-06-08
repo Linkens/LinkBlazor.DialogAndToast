@@ -82,6 +82,7 @@
         get {
             var baseCss = "lb-dialog";
             if (Dialog.Options.CanDrag) baseCss += " lb-dialog-drag";
+            if (Dialog.Options.MultiDialog) baseCss += " lb-dialog-multi";
             return string.IsNullOrEmpty(Dialog.Options.CssClass) ? baseCss : $"{baseCss} {Dialog.Options.CssClass}";
         }
     }

@@ -11,8 +11,8 @@
 @code {
     [Inject]
     DialogService Service { get; set; } = default!;
-    [Parameter] int DialogZIndex { get; set; } = 2000;
-    [Parameter] int MultiDialogZIndex { get; set; } = 1001;
+    [Parameter] public int DialogZIndex { get; set; } = 2000;
+    [Parameter] public int MultiDialogZIndex { get; set; } = 1001;
 
     List<Dialog> dialogs = new List<Dialog>();
 

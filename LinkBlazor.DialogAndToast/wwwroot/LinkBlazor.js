@@ -35,7 +35,7 @@ window.LinkBlazor = {
     },
 
     BringWrapperToFront: function (e) {
-        var dialogs = document.querySelectorAll('.lb-dialog');
+        var dialogs = document.querySelectorAll('.lb-dialog.lb-dialog-multi');
         let Min = 150000;
         if (dialogs.length == 1) return;
         dialogs.forEach((d) => {
