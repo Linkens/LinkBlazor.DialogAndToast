@@ -11,12 +11,15 @@
 @code {
     [Inject]
     DialogService Service { get; set; } = default!;
+    [Parameter] int DialogZIndex { get; set; } = 2000;
+    [Parameter] int MultiDialogZIndex { get; set; } = 1001;
 
     List<Dialog> dialogs = new List<Dialog>();
 
     public async Task Open(Type type, Dictionary<string, object>? parameters, DialogOptions? options)
     {
-        dialogs.Add(new Dialog() { Type = type, Parameters = parameters, Options = options });
+        var DialogZindex = (options != null && options.MultiDialog) ? MultiDialogZIndex : DialogZIndex;
+        dialogs.Add(new Dialog() { Type = type, Parameters = parameters, Options = options, ZIndex = DialogZindex });
 
         await InvokeAsync(() => { StateHasChanged(); });
     }
