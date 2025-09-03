@@ -143,7 +143,7 @@
 .lb-toast-message {
     position: relative;
     width: 250px;
-    z-index: 1002;
+    z-index: 2001;
     position: static;
 }
 
